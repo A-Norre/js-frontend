@@ -1,21 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import './document.css';
+import './Document.css';
 
-const Document = () => {
+const UpdateDocument = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     navigate('/');
   };
 
   return (
     <div className="document-container">
       <div className="document-content">
-        <h2>Document {id}</h2>
-        <p>This is the content of document {id}.</p>
+        <h2>Dokument {id}</h2>
+        <p>Uppdatera Dokument {id}</p>
       </div>
       <form className="document-form" onSubmit={handleSubmit}>
         <label htmlFor="title">Titel</label>
@@ -30,4 +29,4 @@ const Document = () => {
   );
 };
 
-export default Document;
+export default UpdateDocument;
