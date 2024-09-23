@@ -2,3 +2,19 @@
   margin-top: 1em;
   margin-left: 20%;
 }
+
+.add-document-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-document-button:hover {
+  background-color: #0056b3;
+}

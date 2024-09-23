@@ -65,7 +65,7 @@ const Document = () => {
   return (
     <div className="document-container">
       <div className="document-content">
-        <h2>Document {id}</h2>
+        <h2>Dokument: {title}</h2>
         <form className="document-form" onSubmit={handleSubmit}>
           <label htmlFor="title">Title</label>
           <input
@@ -76,7 +76,7 @@ const Document = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <label htmlFor="content">Content</label>
+          <label htmlFor="content">Innehåll</label>
           <textarea
             id="content"
             name="content"

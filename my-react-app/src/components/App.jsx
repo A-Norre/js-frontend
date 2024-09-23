@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Document from './document.jsx';
+import NewDocument from './NewDocument';
 
 function App() {
   const [data, setData] = useState([]);
@@ -26,7 +27,7 @@ function App() {
     };
 
     fetchDocument();
-  }, []);
+  }, [data]);
 
   if (loading) {
     return <div className="loading">Loading document...</div>;
@@ -45,13 +46,14 @@ function App() {
                     <Link to={`/document/${item._id}`}>{item.title}</Link>
                   </h3>
                 ))}
-                <br></br>
-                <br></br>
-              <Link to='/'>Create a new document</Link>
+                <Link to="/document/new">
+                  <button className="add-document-button"><b>+</b> Dokument</button>
+                </Link>
               </div>
             }
           />
           <Route path="/document/:id" element={<Document data={data} />} />
+          <Route path="/document/new" element={<NewDocument />} />
         </Routes>
       </div>
     </Router>
