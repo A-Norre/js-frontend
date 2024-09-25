@@ -13,7 +13,7 @@ const NewDocument = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:3030/data`, {
+      const response = await fetch(`https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
