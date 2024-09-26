@@ -39,7 +39,7 @@ function App() {
   }
 
   return (
-    <Router basename="/dist">
+    <Router basename="/editor">
       <div>
         <Routes>
           <Route
