@@ -32,14 +32,14 @@ function App() {
     };
 
     fetchDocument();
-  }, [data]);
+  }, []);
 
   if (loading) {
     return <div className="loading">Loading document...</div>;
   }
 
   return (
-    <Router>
+    <Router basename="/dist">
       <div>
         <Routes>
           <Route
