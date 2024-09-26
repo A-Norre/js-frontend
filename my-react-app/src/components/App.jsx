@@ -11,7 +11,12 @@ function App() {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await fetch('http://localhost:3030/data');
+        const response = await fetch('https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
