@@ -1,3 +1,4 @@
+import React from 'react'; // Ensure React is imported
 import { useParams, useNavigate } from 'react-router-dom';
 import '../style/document.css';
 
