@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Document from './document.jsx';
 import NewDocument from './NewDocument';
 
+/* istanbul ignore next */
 const productionMode = import.meta.env.MODE === 'production' ? '/~susm20/editor' : '/';
 
 function App() {
