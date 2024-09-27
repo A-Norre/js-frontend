@@ -1,8 +1,11 @@
+import React from 'react'; // Ensure React is imported
 import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Document from './document.jsx';
 import NewDocument from './NewDocument';
+
+const productionMode = import.meta.env.MODE === 'production' ? '/~susm20/editor' : '/';
 
 function App() {
   const [data, setData] = useState([]);
@@ -11,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await fetch('http://localhost:3030/data');
+        const response = await fetch('https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data');
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -34,7 +37,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename={productionMode}>
       <div>
         <Routes>
           <Route
