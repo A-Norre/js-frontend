@@ -14,10 +14,16 @@ const NewDocument = () => {
     e.preventDefault();
     
     try {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_TOKEN}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

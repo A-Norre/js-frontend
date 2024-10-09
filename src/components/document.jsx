@@ -12,13 +12,18 @@ const Document = () => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchDocument = async () => {
       try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${id}`, {
           headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_TOKEN}`,
+            'Authorization': `Bearer ${token}`,
           },  
         });
 
@@ -42,10 +47,16 @@ const Document = () => {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_TOKEN}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
