@@ -14,9 +14,10 @@ const NewDocument = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_TOKEN}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

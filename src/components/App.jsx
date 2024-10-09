@@ -12,9 +12,15 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = `${import.meta.env.VITE_TOKEN}`;
+
     const fetchDocument = async () => {
       try {
-        const response = await fetch('https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_TOKEN}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -30,7 +36,7 @@ function App() {
     };
 
     fetchDocument();
-  }, [data]);
+  }, []);
 
   if (loading) {
     return <div className="loading">Loading document...</div>;
