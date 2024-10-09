@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -34,6 +33,7 @@ const Login = () => {
   };
 
   return (
+    <div>
     <form onSubmit={handleLogin}>
       <input
         type="text"
@@ -49,6 +49,11 @@ const Login = () => {
       />
       <button type="submit">Login</button>
     </form>
+
+    <div>
+        <p>Don't have an account? <Link to="/registration">Register here</Link></p> {/* Link to Register */}
+    </div>
+  </div>
   );
 };
 
