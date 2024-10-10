@@ -1,4 +1,4 @@
-import React from 'react'; // Ensure React is imported
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../style/document.css';
@@ -7,14 +7,13 @@ const Document = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
-  // State to manage form input
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [comments, setComments] = useState([]); 
   const [selectedText, setSelectedText] = useState(""); 
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
-  const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null); // State to track hovered comment index
+  const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
 
   
   
@@ -55,8 +54,8 @@ const Document = () => {
   };
 
   const handleDeleteComment = (index) => {
-  const updatedComments = comments.filter((_, i) => i !== index); // Remove the comment at the given index
-  setComments(updatedComments); // Update the state
+  const updatedComments = comments.filter((_, i) => i !== index);
+  setComments(updatedComments);
   };
 
   const getHighlightedContent = () => {
@@ -122,19 +121,18 @@ const Document = () => {
           />
 
           <label htmlFor="content">Innehåll</label>
-          {/* Replacing textarea with a div for displaying content */}
           <textarea
             id="content"
             name="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            onMouseUp={handleTextSelect} // Handle text selection
+            onMouseUp={handleTextSelect}
             style={{
               width: '100%',
               height: '200px',
               marginBottom: '10px',
-              whiteSpace: "pre-wrap", // Keep newlines
-              wordWrap: "break-word", // Ensure long words break correctly
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
             }}
           ></textarea>
 
@@ -163,8 +161,8 @@ const Document = () => {
               {comments.map((c, index) => (
                 <li
                   key={index}
-                  onMouseEnter={() => setHoveredCommentIndex(index)} // Set hover index on comment
-                  onMouseLeave={() => setHoveredCommentIndex(null)} // Reset hover index on leave
+                  onMouseEnter={() => setHoveredCommentIndex(index)}
+                  onMouseLeave={() => setHoveredCommentIndex(null)}
                 >
                   <strong>On "{c.text}":</strong> {c.comment}
                   <button
