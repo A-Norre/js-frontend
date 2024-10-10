@@ -1,20 +1,32 @@
 import React from 'react'; // Ensure React is imported
 import { useState, useEffect } from 'react';
 import '../style/App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Document from './document.jsx';
-import NewDocument from './NewDocument';
-
-const productionMode = import.meta.env.MODE === 'production' ? '/~susm20/editor' : '/';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // useNavigate hook for navigation
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove JWT token from localStorage
+    navigate('/login'); // Redirect to login page after logout
+  };
 
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await fetch('https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data');
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -30,15 +42,19 @@ function App() {
     };
 
     fetchDocument();
-  }, [data]);
+  }, [navigate]);
 
   if (loading) {
     return <div className="loading">Loading document...</div>;
   }
 
   return (
-    <Router basename={productionMode}>
       <div>
+        {/* Logout button */}
+      <button onClick={handleLogout} className="logout-button">
+        Logout
+      </button>
+
         <Routes>
           <Route
             path="/"
@@ -55,11 +71,8 @@ function App() {
               </div>
             }
           />
-          <Route path="/document/:id" element={<Document data={data} />} />
-          <Route path="/document/new" element={<NewDocument />} />
         </Routes>
       </div>
-    </Router>
   );
 }
 

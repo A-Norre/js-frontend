@@ -18,11 +18,21 @@ const Document = () => {
   
   
 
-
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await fetch(`https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data/${id}`);
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },  
+        });
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -80,9 +90,16 @@ const Document = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data`, {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

@@ -14,9 +14,16 @@ const NewDocument = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net/data`, {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
