@@ -10,7 +10,14 @@ const Document = () => {
   // State to manage form input
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [comments, setComments] = useState([]); 
+  const [selectedText, setSelectedText] = useState(""); 
+  const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
+  const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null); // State to track hovered comment index
+
+  
+  
 
 
   useEffect(() => {
@@ -32,6 +39,43 @@ const Document = () => {
 
     fetchDocument();
   }, [id]);
+
+  const handleTextSelect = () => {
+    const selected = window.getSelection().toString();
+    setSelectedText(selected);
+  };
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if (selectedText && newComment) {
+      setComments([...comments, { text: selectedText, comment: newComment }]);
+      setNewComment("");
+      setSelectedText("");
+    }
+  };
+
+  const handleDeleteComment = (index) => {
+  const updatedComments = comments.filter((_, i) => i !== index); // Remove the comment at the given index
+  setComments(updatedComments); // Update the state
+  };
+
+  const getHighlightedContent = () => {
+    let highlightedContent = content;
+
+    comments.forEach((comment, index) => {
+      const regex = new RegExp(`(${comment.text})`, "g");
+      highlightedContent = highlightedContent.replace(
+        regex,
+        (match) => 
+          index === hoveredCommentIndex
+            ? `<mark style="background-color: yellow;">${match}</mark>`
+            : match
+      );
+    });
+
+    return { __html: highlightedContent };
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,15 +122,72 @@ const Document = () => {
           />
 
           <label htmlFor="content">Innehåll</label>
+          {/* Replacing textarea with a div for displaying content */}
           <textarea
             id="content"
             name="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            onMouseUp={handleTextSelect} // Handle text selection
+            style={{
+              width: '100%',
+              height: '200px',
+              marginBottom: '10px',
+              whiteSpace: "pre-wrap", // Keep newlines
+              wordWrap: "break-word", // Ensure long words break correctly
+            }}
           ></textarea>
 
           <button type="submit">Update</button>
         </form>
+
+        <br />
+
+        <div className="comment-section">
+          {selectedText && (
+            <form onSubmit={handleAddComment}>
+              <p>Selected text: "{selectedText}"</p>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add your comment"
+              ></textarea>
+              <br />
+              <button type="submit">Add Comment</button>
+            </form>
+          )}
+
+          <div className="comments-section">
+            <h3>Comments</h3>
+            <ul>
+              {comments.map((c, index) => (
+                <li
+                  key={index}
+                  onMouseEnter={() => setHoveredCommentIndex(index)} // Set hover index on comment
+                  onMouseLeave={() => setHoveredCommentIndex(null)} // Reset hover index on leave
+                >
+                  <strong>On "{c.text}":</strong> {c.comment}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteComment(index);
+                    }}
+                    style={{
+                      marginLeft: "10px",
+                      background: "none",
+                      border: "none",
+                      color: "green",
+                      cursor: "pointer",
+                      fontSize: "16px",
+                    }}
+                  >
+                    ✓
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
