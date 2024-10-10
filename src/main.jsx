@@ -11,7 +11,7 @@ import Header from './views/Header.jsx';
 import Footer from './views/Footer.jsx';
 import './style/index.css';
 
-const productionMode = import.meta.env.MODE === 'production' ? '/~susm20/editor' : '/';
+const productionMode = import.meta.env.MODE === 'production' ? `${import.meta.env.VITE_ACRONYM}` : '/';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
