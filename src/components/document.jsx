@@ -15,9 +15,6 @@ const Document = () => {
   const [loading, setLoading] = useState(true);
   const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
 
-  
-  
-
   useEffect(() => {
     const fetchDocument = async () => {
       try {
