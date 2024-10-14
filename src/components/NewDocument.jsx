@@ -29,6 +29,7 @@ const NewDocument = () => {
         body: JSON.stringify({
           title,
           content,
+          username: localStorage.getItem('username'),
         }),
       });
 

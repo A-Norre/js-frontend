@@ -10,6 +10,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove JWT token from localStorage
+    localStorage.removeItem('username'); // Remove username from localStorage
     navigate('/login'); // Redirect to login page after logout
   };
 
