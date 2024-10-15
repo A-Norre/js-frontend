@@ -25,7 +25,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/document/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },  
