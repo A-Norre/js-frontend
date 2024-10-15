@@ -9,14 +9,12 @@ const Document = () => {
   
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [shared, setShared] = useState('');
   const [comments, setComments] = useState([]); 
   const [selectedText, setSelectedText] = useState(""); 
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
-
-  
-  
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -27,7 +25,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/document/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },  
@@ -119,6 +117,57 @@ const Document = () => {
     }
   };
 
+  const handleShare = async (e) => {
+    e.preventDefault();
+    console.log('Sharing with:', shared);
+
+    try {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/share`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: `${id}`,
+          shared,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to share document');
+      } else {
+
+        const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mailgun`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: shared,
+            subject: `Document shared with you: ${title}`,
+            text: `You have been granted access to a document, ${import.meta.env.VITE_BACKEND_URL}/document/${id}`,
+          }),
+        });
+
+        if (!data.ok) {
+          throw new Error('Failed to send email');
+        }
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading document...</div>;
   }
@@ -154,6 +203,21 @@ const Document = () => {
           ></textarea>
 
           <button type="submit">Update</button>
+        </form>
+          
+        <br />
+        
+        <form className='document-form' onSubmit={handleShare}>
+          <input
+            type="input"
+            id="username"
+            name="username"
+            value={shared}
+            placeholder='Username to share with'
+            onChange={(e) => setShared(e.target.value)}
+          />
+
+          <button type="submit">Share</button>
         </form>
 
         <br />
