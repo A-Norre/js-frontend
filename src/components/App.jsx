@@ -1,7 +1,7 @@
 import React from 'react'; // Ensure React is imported
 import { useState, useEffect } from 'react';
 import '../style/App.css';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, json } from 'react-router-dom';
 
 function App() {
   const [data, setData] = useState([]);
@@ -23,7 +23,7 @@ function App() {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${localStorage.getItem('username')}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
