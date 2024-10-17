@@ -1,12 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 import '../style/document.css';
 
 const Document = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const [socket, setSocket] = useState(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [shared, setShared] = useState('');
@@ -15,6 +16,13 @@ const Document = () => {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io(`http://localhost:3030`); // Connecting to the server
+    newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
+    setSocket(newSocket);
+    return () => newSocket.close();
+}, [id]);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -46,6 +54,41 @@ const Document = () => {
 
     fetchDocument();
   }, [id]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+      socket.on('updateContent', (newContent) => {
+        setContent(newContent);
+      });
+    
+      socket.on('updateTitle', (newTitle) => {
+        setTitle(newTitle);
+      });
+
+      return () => {
+        socket.off('updateContent');
+        socket.off('updateTitle');
+      };
+    }, [socket]);
+
+    // Emit title changes to the server
+    const handleTitleChange = (e) => {
+      const newTitle = e.target.value;
+      setTitle(newTitle);
+
+      // Emit title change to server
+      socket.emit('titleChange', { documentId: id, newTitle });
+    };
+
+    // Emit content changes to the server
+    const handleContentChange = (e) => {
+      const newContent = e.target.value;
+      setContent(newContent);
+
+      // Emit content change to server
+      socket.emit('contentChange', { documentId: id, newContent });
+    };
 
   const handleTextSelect = () => {
     const selected = window.getSelection().toString();
@@ -183,7 +226,8 @@ const Document = () => {
             id="title"
             name="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            //onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
           />
 
           <label htmlFor="content">Innehåll</label>
@@ -191,7 +235,7 @@ const Document = () => {
             id="content"
             name="content"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={handleContentChange}
             onMouseUp={handleTextSelect}
             style={{
               width: '100%',
