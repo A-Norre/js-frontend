@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 
-function App() {
+function App(backendURL) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -22,7 +22,7 @@ function App() {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+        const response = await fetch(`http://localhost:8080/data`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -51,10 +51,7 @@ function App() {
   return (
       <div>
         {/* Logout button */}
-      <button onClick={handleLogout} className="logout-button">
-        Logout
-      </button>
-
+        <button onClick={handleLogout} className="logout-button">Logout</button>
         <Routes>
           <Route
             path="/"

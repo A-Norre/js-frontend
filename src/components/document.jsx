@@ -14,6 +14,8 @@ const Document = () => {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+
 
   
   
@@ -27,7 +29,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${id}`, {
+        const response = await fetch(`http://localhost:8080/data/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },  
@@ -70,20 +72,22 @@ const Document = () => {
 
   const getHighlightedContent = () => {
     let highlightedContent = content;
-
+  
     comments.forEach((comment, index) => {
-      const regex = new RegExp(`(${comment.text})`, "g");
+      const escapedText = comment.text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+      const regex = new RegExp(`(${escapedText})`, "g");
       highlightedContent = highlightedContent.replace(
         regex,
-        (match) => 
+        (match) =>
           index === hoveredCommentIndex
             ? `<mark style="background-color: yellow;">${match}</mark>`
             : match
       );
     });
-
+  
     return { __html: highlightedContent };
   };
+  
   
 
   const handleSubmit = async (e) => {
@@ -96,7 +100,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+      const response = await fetch(`http://localhost:8080/data`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -135,77 +139,86 @@ const Document = () => {
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className="title-input"
           />
 
           <label htmlFor="content">Innehåll</label>
-          <textarea
-            id="content"
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            onMouseUp={handleTextSelect}
-            style={{
-              width: '100%',
-              height: '200px',
-              marginBottom: '10px',
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
-            }}
-          ></textarea>
 
-          <button type="submit">Update</button>
+          {isEditMode ? (
+            <textarea
+              id="content"
+              name="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onMouseUp={handleTextSelect}
+              className="content-textarea"
+            ></textarea>
+          ) : (
+            <div
+              id="content-display"
+              className="content-display"
+              dangerouslySetInnerHTML={getHighlightedContent()}
+            />
+          )}
+
+          <button type="submit" className="update-button">
+            Update
+          </button>
         </form>
 
         <br />
 
-        <div className="comment-section">
-          {selectedText && (
-            <form onSubmit={handleAddComment}>
-              <p>Selected text: "{selectedText}"</p>
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add your comment"
-              ></textarea>
-              <br />
-              <button type="submit">Add Comment</button>
-            </form>
-          )}
+        <button onClick={() => setIsEditMode(!isEditMode)} className="toggle-button">
+          {isEditMode ? "Switch to View Mode" : "Switch to Edit Mode"}
+        </button>
+      </div>
 
-          <div className="comments-section">
-            <h3>Comments</h3>
-            <ul>
-              {comments.map((c, index) => (
-                <li
-                  key={index}
-                  onMouseEnter={() => setHoveredCommentIndex(index)}
-                  onMouseLeave={() => setHoveredCommentIndex(null)}
-                >
+      <div className="comment-section">
+        {selectedText && (
+          <form onSubmit={handleAddComment}>
+            <p>Selected text: "{selectedText}"</p>
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add your comment"
+              className="comment-textarea"
+            ></textarea>
+            <br />
+            <button type="submit" className="add-comment-button">
+              Add Comment
+            </button>
+          </form>
+        )}
+
+        <div className="comments-section">
+          <h3>Comments</h3>
+          <ul className="comments-list">
+            {comments.map((c, index) => (
+              <li
+                key={index}
+                className="comment-item"
+                onMouseEnter={() => setHoveredCommentIndex(index)}
+                onMouseLeave={() => setHoveredCommentIndex(null)}
+              >
+                <span className="comment-text">
                   <strong>On "{c.text}":</strong> {c.comment}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteComment(index);
-                    }}
-                    style={{
-                      marginLeft: "10px",
-                      background: "none",
-                      border: "none",
-                      color: "green",
-                      cursor: "pointer",
-                      fontSize: "16px",
-                    }}
-                  >
-                    ✓
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteComment(index);
+                  }}
+                  className="delete-comment-button"
+                >
+                  ✓
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default Document;

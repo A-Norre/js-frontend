@@ -20,7 +20,7 @@ const NewDocument = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data`, {
+      const response = await fetch(`http://localhost:8080/data`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
