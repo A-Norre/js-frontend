@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import '../style/document.css';
+import { VITE_BACKEND_URL as backendURL } from "../../url.json";
+import { VITE_BACKEND_URL_SOCKETS as backendURLSockets } from "../../url.json";
 
 const Document = () => {
   const { id } = useParams();
@@ -20,7 +22,7 @@ const Document = () => {
 
 
   useEffect(() => {
-    const newSocket = io(`http://localhost:3030`); // Connecting to the server
+    const newSocket = io(`${backendURLSockets}`); // Connecting to the server
     newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
     setSocket(newSocket);
     return () => newSocket.close();
@@ -35,7 +37,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`http://localhost:8080/data/document/${id}`, {
+        const response = await fetch(`${backendURL}/data/document/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },  
@@ -141,7 +143,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-      const response = await fetch(`http://localhost:8080/data`, {
+      const response = await fetch(`${backendURL}/data`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -175,7 +177,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/share`, {
+      const response = await fetch(`${backendURL}/data/share`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -191,7 +193,7 @@ const Document = () => {
         throw new Error('Failed to share document');
       } else {
 
-        const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mailgun`, {
+        const data = await fetch(`${backendURL}/mailgun`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -200,7 +202,7 @@ const Document = () => {
           body: JSON.stringify({
             to: shared,
             subject: `Document shared with you: ${title}`,
-            text: `You have been granted access to a document, ${import.meta.env.VITE_BACKEND_URL}/document/${id}`,
+            text: `You have been granted access to a document, ${backendURL}/document/${id}`,
           }),
         });
 

@@ -2,6 +2,7 @@ import React from 'react'; // Ensure React is imported
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import '../style/document.css';
+import { VITE_BACKEND_URL as backendURL } from "../../url.json";
 
 const NewDocument = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const NewDocument = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-      const response = await fetch(`http://localhost:8080/data`, {
+      const response = await fetch(`${backendURL}/data`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

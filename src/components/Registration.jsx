@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/Registration.css';
+import { VITE_BACKEND_URL as backendURL } from "../../url.json";
 
 const Register = () => {
 
@@ -13,7 +14,7 @@ const Register = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:8080/auth/register`, {
+      const response = await fetch(`${backendURL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

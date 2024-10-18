@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import '../style/Login.css';
+import { VITE_BACKEND_URL as backendURL } from "../../url.json";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ const Login = () => {
     e.preventDefault();
 
     // Simulate login request (replace with actual API call)
-    const response = await fetch(`http://localhost:8080/auth/login`, {
+    const response = await fetch(`${backendURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

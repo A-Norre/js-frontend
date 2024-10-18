@@ -2,8 +2,9 @@ import React from 'react'; // Ensure React is imported
 import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, json } from 'react-router-dom';
+import { VITE_BACKEND_URL as backendURL } from "../../url.json";
 
-function App(backendURL) {
+function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -23,7 +24,7 @@ function App(backendURL) {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/${localStorage.getItem('username')}`, {
+        const response = await fetch(`${backendURL}/data/${localStorage.getItem('username')}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
