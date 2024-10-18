@@ -9,9 +9,10 @@ import Registration from './components/Registration.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './views/Header.jsx';
 import Footer from './views/Footer.jsx';
+import { VITE_ACRONYM as acronym } from '../url.json';
 import './style/index.css';
 
-const productionMode = import.meta.env.MODE === 'production' ? `${import.meta.env.VITE_ACRONYM}` : '/';
+const productionMode = import.meta.env.MODE === 'production' ? `${acronym}` : '/';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
