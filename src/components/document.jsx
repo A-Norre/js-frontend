@@ -1,14 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 import '../style/document.css';
 
 const Document = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const [socket, setSocket] = useState(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [shared, setShared] = useState('');
   const [comments, setComments] = useState([]); 
   const [selectedText, setSelectedText] = useState(""); 
   const [newComment, setNewComment] = useState("");
@@ -17,8 +19,12 @@ const Document = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
 
-  
-  
+  useEffect(() => {
+    const newSocket = io(`http://localhost:3030`); // Connecting to the server
+    newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
+    setSocket(newSocket);
+    return () => newSocket.close();
+}, [id]);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -29,7 +35,7 @@ const Document = () => {
           navigate('/login'); // Redirect if no token is found
         }
 
-        const response = await fetch(`http://localhost:8080/data/${id}`, {
+        const response = await fetch(`http://localhost:8080/data/document/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },  
@@ -50,6 +56,41 @@ const Document = () => {
 
     fetchDocument();
   }, [id]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+      socket.on('updateContent', (newContent) => {
+        setContent(newContent);
+      });
+    
+      socket.on('updateTitle', (newTitle) => {
+        setTitle(newTitle);
+      });
+
+      return () => {
+        socket.off('updateContent');
+        socket.off('updateTitle');
+      };
+    }, [socket]);
+
+    // Emit title changes to the server
+    const handleTitleChange = (e) => {
+      const newTitle = e.target.value;
+      setTitle(newTitle);
+
+      // Emit title change to server
+      socket.emit('titleChange', { documentId: id, newTitle });
+    };
+
+    // Emit content changes to the server
+    const handleContentChange = (e) => {
+      const newContent = e.target.value;
+      setContent(newContent);
+
+      // Emit content change to server
+      socket.emit('contentChange', { documentId: id, newContent });
+    };
 
   const handleTextSelect = () => {
     const selected = window.getSelection().toString();
@@ -123,6 +164,57 @@ const Document = () => {
     }
   };
 
+  const handleShare = async (e) => {
+    e.preventDefault();
+    console.log('Sharing with:', shared);
+
+    try {
+      const token = localStorage.getItem('token');
+
+        if (!token) {
+          navigate('/login'); // Redirect if no token is found
+        }
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/data/share`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: `${id}`,
+          shared,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to share document');
+      } else {
+
+        const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mailgun`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: shared,
+            subject: `Document shared with you: ${title}`,
+            text: `You have been granted access to a document, ${import.meta.env.VITE_BACKEND_URL}/document/${id}`,
+          }),
+        });
+
+        if (!data.ok) {
+          throw new Error('Failed to send email');
+        }
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading document...</div>;
   }
@@ -138,7 +230,7 @@ const Document = () => {
             id="title"
             name="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             className="title-input"
           />
 
@@ -149,7 +241,7 @@ const Document = () => {
               id="content"
               name="content"
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleContentChange}
               onMouseUp={handleTextSelect}
               className="content-textarea"
             ></textarea>
@@ -164,6 +256,21 @@ const Document = () => {
           <button type="submit" className="update-button">
             Update
           </button>
+        </form>
+          
+        <br />
+        
+        <form className='document-form' onSubmit={handleShare}>
+          <input
+            type="input"
+            id="username"
+            name="username"
+            value={shared}
+            placeholder='Username to share with'
+            onChange={(e) => setShared(e.target.value)}
+          />
+
+          <button type="submit">Share</button>
         </form>
 
         <br />

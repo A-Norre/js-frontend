@@ -23,8 +23,9 @@ const Login = () => {
     const data = await response.json();
 
     if (data.token) {
-      // Save the token to local storage
+      // Save the token & localStorage to local storage
       localStorage.setItem('token', data.token);
+      localStorage.setItem('username', username);
 
       // Redirect to the protected route (main app)
       navigate('/');
