@@ -14,7 +14,7 @@ describe('NewDocument Component', () => {
     require('react-router-dom').useParams.mockReturnValue({ id: '123' });
   });
 
-  it('renders the static content', () => {
+  it('checks that it renders the text correctly', () => {
     render(
       <MemoryRouter>
         <NewDocument />
@@ -24,9 +24,10 @@ describe('NewDocument Component', () => {
     const staticText = screen.getByText(/Skapa Nytt Dokument/i);
 
     expect(staticText).toBeInTheDocument();
+
   });
 
-  it('renders the title input field', () => {
+  it('checks that it renders the title input to be in the document', () => {
     render(
       <MemoryRouter>
         <NewDocument />
@@ -37,9 +38,10 @@ describe('NewDocument Component', () => {
 
     expect(titleInput).toBeInTheDocument();
     expect(titleInput.tagName).toBe('INPUT');
+
   });
 
-  it('renders the content textarea', () => {
+  it('checks that it renders the content textarea with label', () => {
     render(
       <MemoryRouter>
         <NewDocument />
@@ -53,7 +55,7 @@ describe('NewDocument Component', () => {
 
   });
 
-  it('renders the dynamic id in the heading', () => {
+  it('checks that it renders the document with the dynamic id', () => {
     render(
       <MemoryRouter>
         <NewDocument />
@@ -63,5 +65,6 @@ describe('NewDocument Component', () => {
     const heading = screen.getByText(/Dokument 123/i);
 
     expect(heading).toBeInTheDocument();
+
   });
 });

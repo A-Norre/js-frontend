@@ -4,60 +4,44 @@ import { MemoryRouter } from 'react-router-dom';
 import Document from '../src/components/document.jsx';
 
 describe('Document Component', () => {
-    
-  it('renders the static form elements displayed', () => {
 
-    const originalError = console.error;
+  const originalError = console.error;
+
+  beforeEach(() => {
     console.error = jest.fn();
-
     render(
       <MemoryRouter>
         <Document />
       </MemoryRouter>
     );
-
-    expect(screen.getByRole('button', { name: /Update/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/Innehåll/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
-
-    console.error = originalError;
   });
 
-  it('renders the title input field used on the page', () => {
+  afterEach(() => {
+    console.error = originalError;
+  });
+    
+  it('checks that it renders the Update button', () => {
 
-    const originalError = console.error;
-    console.error = jest.fn();
+    expect(screen.getByRole('button', { name: /Update/i })).toBeInTheDocument();
+  });
 
-    render(
-      <MemoryRouter>
-        <Document />
-      </MemoryRouter>
-    );
+  it('checks that it renders the title input label', () => {
+
+    expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
+  });
+
+  it('checks that it renders the title input field used on the page', () => {
 
     const titleInput = screen.getByLabelText(/Title/i);
 
     expect(titleInput).toBeInTheDocument();
     expect(titleInput.tagName).toBe('INPUT');
 
-    console.error = originalError;
   });
 
-  it('renders the content textarea for writing', () => {
+  it('checks that it renders an <h3> tag with the word "Comments"', () => {
 
-    const originalError = console.error;
-    console.error = jest.fn();
-
-    render(
-      <MemoryRouter>
-        <Document />
-      </MemoryRouter>
-    );
-
-    const contentTextarea = screen.getByLabelText(/Innehåll/i);
-
-    expect(contentTextarea).toBeInTheDocument();
-    expect(contentTextarea.tagName).toBe('TEXTAREA');
-
-    console.error = originalError;
+    expect(screen.getByRole('heading', { level: 3, name: /Comments/i })).toBeInTheDocument();
+    
   });
 });

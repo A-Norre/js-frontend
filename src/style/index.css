@@ -62,11 +62,12 @@ textarea {
 }
 
 footer {
-  background-color: #333;
-  color: #fff;
-  padding: 1.4rem 8rem;
-  position: absolute; /* Ensure footer stays relative to the content */
-  bottom: 0;
-  width: 100%; /* Ensure footer spans the full width of the viewport */
+    background-color: #333;
+    color: #fff;
+    padding: 0.7rem 4rem;
+    width: 100%;
+    text-align: left;
+    position: fixed; /* Ensures it’s positioned relative to the body content */
+    bottom: 0;
 }
 

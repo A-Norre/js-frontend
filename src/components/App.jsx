@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, json } from 'react-router-dom';
 
-function App() {
+function App(backendURL) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -52,10 +52,7 @@ function App() {
   return (
       <div>
         {/* Logout button */}
-      <button onClick={handleLogout} className="logout-button">
-        Logout
-      </button>
-
+        <button onClick={handleLogout} className="logout-button">Logout</button>
         <Routes>
           <Route
             path="/"

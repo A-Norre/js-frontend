@@ -1,74 +1,174 @@
 .document-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    gap: 20px;
-  }
-  
-  .document-content {
-    text-align: center;
-  }
-  
-  .document-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 500px;
-    gap: 10px;
-  }
-  
-  .document-form label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .document-form input,
-  .document-form textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-  }
-  
-  .document-form textarea {
-    min-height: 200px;
-    resize: vertical;
-  }
-  
-  .document-form button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .document-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .comment-section button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .comment-section button:hover {
-    background-color: #0056b3;
-  }
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-  .content-display {
-    border: 1px solid #ccc;
-    padding: 10px;
-    min-height: 200px;
-    white-space: pre-wrap; /* Preserve newlines and spacing */
-    word-wrap: break-word; /* Ensure long words break correctly */
-    text-align: left; /* Ensure text starts from the left */
-  }
+.document-content, .comment-section {
+  flex: 1;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
+.document-content {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.comment-section {
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.document-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.document-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.document-form input,
+.document-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.document-form textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.document-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.document-form button:hover {
+  background-color: #0056b3;
+}
+
+.content-display {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 200px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+  vertical-align: top;
+}
+
+.content-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 200px;
+}
+
+
+.update-button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+}
+
+.toggle-button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 200px;
+}
+
+.toggle-button:hover {
+  background-color: #218838;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-comment-button {
+  padding: 8px 16px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-comment-button:hover {
+  background-color: #138496;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.comment-text {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.comment-item:hover {
+  background-color: #f1f1f1;
+}
+
+.comment-text {
+  text-align: left;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.delete-comment-button {
+  background: none;
+  border: none;
+  color: green;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-comment-button:hover {
+  color: darkgreen;
+}

@@ -1,5 +1,7 @@
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
+import '../style/Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -10,7 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     // Simulate login request (replace with actual API call)
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
+    const response = await fetch(`http://localhost:8080/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,27 +36,32 @@ const Login = () => {
   };
 
   return (
-    <div>
-    <form onSubmit={handleLogin}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="login-container">
+      <h2 className="login-title">Login</h2>
+      <form className="login-form" onSubmit={handleLogin}>
+        <input
+          className="login-input"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          className="login-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="login-button" type="submit">Login</button>
+      </form>
 
-    <div>
-        <p>Don't have an account? <Link to="/registration">Register here</Link></p> {/* Link to Register */}
+      <div className="login-footer">
+        <p>
+          Don't have an account? <Link to="/registration" className="register-link">Register here</Link>
+        </p>
+      </div>
     </div>
-  </div>
   );
 };
 

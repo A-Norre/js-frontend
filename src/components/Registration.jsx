@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../style/Registration.css';
 
 const Register = () => {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -11,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
+      const response = await fetch(`http://localhost:8080/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,29 +36,31 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
+      <h2 className="register-title">Register</h2>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <input
+            className="register-input"
             type="text"
+            placeholder="Username"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="form-group">
           <input
+            className="register-input"
             type="password"
+            placeholder="Password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button className="register-button" type="submit">Register</button>
       </form>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
     </div>
