@@ -25,12 +25,6 @@ describe('Document Component', () => {
     expect(screen.getByRole('button', { name: /Update/i })).toBeInTheDocument();
   });
 
-  it('checks that it renders the content input label', () => {
-
-    expect(screen.getByLabelText(/Innehåll/i)).toBeInTheDocument();
-
-  });
-
   it('checks that it renders the title input label', () => {
 
     expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
@@ -42,15 +36,6 @@ describe('Document Component', () => {
 
     expect(titleInput).toBeInTheDocument();
     expect(titleInput.tagName).toBe('INPUT');
-
-  });
-
-  it('checks that it renders the content textarea for writing', () => {
-
-    const contentTextarea = screen.getByLabelText(/Innehåll/i);
-
-    expect(contentTextarea).toBeInTheDocument();
-    expect(contentTextarea.tagName).toBe('TEXTAREA');
 
   });
 

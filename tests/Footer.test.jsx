@@ -12,7 +12,7 @@ describe('Footer Component', () => {
           </MemoryRouter>
         );
       
-        expect(screen.getByText(/© Namn/i)).toBeInTheDocument();
+        expect(screen.getByText(/© Emil Folino/i)).toBeInTheDocument();
 
     });      
 });
