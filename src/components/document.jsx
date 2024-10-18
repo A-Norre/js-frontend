@@ -20,13 +20,12 @@ const Document = () => {
   const [hoveredCommentIndex, setHoveredCommentIndex] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
-
   useEffect(() => {
     const newSocket = io(`${backendURLSockets}`); // Connecting to the server
     newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
     setSocket(newSocket);
     return () => newSocket.close();
-}, [id]);
+  }, [id]);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -74,25 +73,25 @@ const Document = () => {
         socket.off('updateContent');
         socket.off('updateTitle');
       };
-    }, [socket]);
+  }, [socket]);
 
-    // Emit title changes to the server
-    const handleTitleChange = (e) => {
-      const newTitle = e.target.value;
-      setTitle(newTitle);
+  // Emit title changes to the server
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
 
-      // Emit title change to server
-      socket.emit('titleChange', { documentId: id, newTitle });
-    };
+    // Emit title change to server
+    socket.emit('titleChange', { documentId: id, newTitle });
+  };
 
-    // Emit content changes to the server
-    const handleContentChange = (e) => {
-      const newContent = e.target.value;
-      setContent(newContent);
+  // Emit content changes to the server
+  const handleContentChange = (e) => {
+    const newContent = e.target.value;
+    setContent(newContent);
 
-      // Emit content change to server
+    // Emit content change to server
       socket.emit('contentChange', { documentId: id, newContent });
-    };
+  };
 
   const handleTextSelect = () => {
     const selected = window.getSelection().toString();
