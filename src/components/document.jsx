@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import '../style/document.css';
 import { VITE_BACKEND_URL as backendURL } from "../../url.json";
-import { VITE_BACKEND_URL_SOCKETS as backendURLSockets } from "../../url.json";
 
 const Document = () => {
   const { id } = useParams();
@@ -21,7 +20,8 @@ const Document = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    const newSocket = io(`${backendURLSockets}`); // Connecting to the server
+    const newSocket = io(backendURL); // Connecting to the server
+
     newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
     setSocket(newSocket);
     return () => newSocket.close();

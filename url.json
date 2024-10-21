@@ -1,6 +1,5 @@
 {
     "VITE_BACKEND_URL_OLD": "https://jsramverk-eafmccbgceegf9bt.northeurope-01.azurewebsites.net",
     "VITE_BACKEND_URL": "http://localhost:8080",
-    "VITE_BACKEND_URL_SOCKETS": "http://localhost:3030",
     "VITE_ACRONYM": "/~susm20/editor"
 }
