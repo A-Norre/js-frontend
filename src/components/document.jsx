@@ -69,9 +69,18 @@ const Document = () => {
         setTitle(newTitle);
       });
 
+      socket.on('newComment', (comments) => {
+        setComments(comments);
+      });
+
+      socket.on('deletedComments', (comments) => {
+        setComments(comments);
+      });
+
       return () => {
         socket.off('updateContent');
         socket.off('updateTitle');
+        socket.off('newComment')
       };
   }, [socket]);
 
@@ -102,6 +111,12 @@ const Document = () => {
     e.preventDefault();
     if (selectedText && newComment) {
       setComments([...comments, { text: selectedText, comment: newComment }]);
+      
+      socket.emit('addComment', {
+          documentId: id,
+          comments: [...comments, { text: selectedText, comment: newComment }],
+        });
+
       setNewComment("");
       setSelectedText("");
     }
@@ -110,7 +125,12 @@ const Document = () => {
   const handleDeleteComment = (index) => {
   const updatedComments = comments.filter((_, i) => i !== index);
   setComments(updatedComments);
-  };
+
+  socket.emit('removeComment', {
+    documentId: id,
+    comments: updatedComments,
+  });
+};
 
   const getHighlightedContent = () => {
     let highlightedContent = content;
