@@ -1,6 +1,6 @@
 # GraphQL
 
-GraphQL underlättar vid komplexa applikationer då det gör det möjligt att hämta data från flera olika källor med ett och samma API-anrop. Istället för att behöva hämta in samtliga mängder data från flera olika källor och därefter sortera ut de bitar data som önskas, erbjuder GraphQL möjligheten att enbart hämta den data som behövs i ett redan sorterat format. Det här bidrar till ett optimerat API vilket i sin tur innebär förbättrat prestanda i programmet. 
+GraphQL underlättar vid komplexa applikationer då det gör det möjligt att hämta data från flera olika källor med ett och samma API-anrop, istället för att behöva hämta in samtliga mängder data från flera olika källor. Därefter sorteras bitar data som önskas ut då GraphQL erbjuder möjligheten att enbart hämta den data som behövs i ett redan sorterat format. Det här bidrar till ett optimerat API vilket i sin tur innebär förbättrat prestanda i programmet. 
 
 # Fördelar
 
