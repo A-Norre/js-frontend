@@ -4,4 +4,4 @@ GraphQL underlättar vid komplexa applikationer då det gör det möjligt att h�
 
 # Fördelar
 
-GraphQL har visat förmåga att hämta data på ett betydligt mer effektivt sätt. Då det ger möjligheten för att hämta data från flera olika källor i ett och samma API-anrop förenklar det programmet och på så vis minskas programmets komplexitet samtidigt som det bidrar till en bättre prestanda. Genom GraphQL kan frontend leverera resultat snabbare, som då bidrar till en bättre användarupplevelse. 
+GraphQL har visat förmåga att hämta data på ett betydligt mer effektivt sätt. Då det ger möjligheten för att hämta data från flera olika källor i ett och samma API-anrop förenklar det programmet och på så vis minskas programmets komplexitet samtidigt som det bidrar till en ökad prestanda. Genom GraphQL kan frontend leverera resultat snabbare, som då bidrar till en bättre användarupplevelse. 
