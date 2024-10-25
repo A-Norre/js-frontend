@@ -12,7 +12,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Simulate login request (replace with actual API call)
     const response = await fetch(`${backendURL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -24,14 +23,11 @@ const Login = () => {
     const data = await response.json();
 
     if (data.token) {
-      // Save the token & localStorage to local storage
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', username);
 
-      // Redirect to the protected route (main app)
       navigate('/');
     } else {
-      // Handle login failure (e.g., show an error message)
       console.error('Login failed');
     }
   };

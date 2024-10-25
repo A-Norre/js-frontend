@@ -1,4 +1,4 @@
-import React from 'react'; // Ensure React is imported
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import '../style/document.css';
@@ -18,7 +18,7 @@ const NewDocument = () => {
       const token = localStorage.getItem('token');
 
         if (!token) {
-          navigate('/login'); // Redirect if no token is found
+          navigate('/login');
         }
 
       const response = await fetch(`${backendURL}/data`, {

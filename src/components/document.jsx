@@ -20,9 +20,9 @@ const Document = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    const newSocket = io(backendURL); // Connecting to the server
+    const newSocket = io(backendURL);
 
-    newSocket.emit('joinRoom', id); // Sending the chatroom ID to the server
+    newSocket.emit('joinRoom', id);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [id]);
@@ -33,7 +33,7 @@ const Document = () => {
         const token = localStorage.getItem('token');
 
         if (!token) {
-          navigate('/login'); // Redirect if no token is found
+          navigate('/login');
         }
 
         const response = await fetch(`${backendURL}/data/document/${id}`, {
@@ -84,21 +84,17 @@ const Document = () => {
       };
   }, [socket]);
 
-  // Emit title changes to the server
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
 
-    // Emit title change to server
     socket.emit('titleChange', { documentId: id, newTitle });
   };
 
-  // Emit content changes to the server
   const handleContentChange = (e) => {
     const newContent = e.target.value;
     setContent(newContent);
 
-    // Emit content change to server
       socket.emit('contentChange', { documentId: id, newContent });
   };
 
@@ -159,7 +155,7 @@ const Document = () => {
       const token = localStorage.getItem('token');
 
         if (!token) {
-          navigate('/login'); // Redirect if no token is found
+          navigate('/login');
         }
 
       const response = await fetch(`${backendURL}/data`, {
@@ -193,7 +189,7 @@ const Document = () => {
       const token = localStorage.getItem('token');
 
         if (!token) {
-          navigate('/login'); // Redirect if no token is found
+          navigate('/login');
         }
 
       const response = await fetch(`${backendURL}/data/share`, {

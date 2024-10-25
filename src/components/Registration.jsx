@@ -28,7 +28,6 @@ const Register = () => {
         throw new Error(data.message || 'Registration failed');
       }
 
-      // If registration is successful, navigate to the login page
       navigate('/login');
     } catch (error) {
       setErrorMessage(error.message);

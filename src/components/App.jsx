@@ -1,4 +1,4 @@
-import React from 'react'; // Ensure React is imported
+import React from 'react';
 import { useState, useEffect } from 'react';
 import '../style/App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, json } from 'react-router-dom';
@@ -7,12 +7,12 @@ import { VITE_BACKEND_URL as backendURL } from "../../url.json";
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove JWT token from localStorage
-    localStorage.removeItem('username'); // Remove username from localStorage
-    navigate('/login'); // Redirect to login page after logout
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    navigate('/login');
   };
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function App() {
         const token = localStorage.getItem('token');
 
         if (!token) {
-          navigate('/login'); // Redirect if no token is found
+          navigate('/login');
         }
 
         const response = await fetch(`${backendURL}/data/${localStorage.getItem('username')}`, {
